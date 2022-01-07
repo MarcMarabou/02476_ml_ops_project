@@ -1,7 +1,7 @@
 # 02476_ml_ops_project
 Progress based on [project checklist](https://github.com/SkafteNicki/dtu_mlops/blob/main/projects/projects.md)
 
-Project by: Marc Sun Bøg (s173905), Kasper Schou Telkamp (s170397) og Jacob Bahnsen Schmidt (s184346)
+Project by: Marc Sun Bøg (s173905), Kasper Schou Telkamp (s170397) and Jacob Bahnsen Schmidt (s184346)
 
 ## Project description
 ### Overall goal of the project
