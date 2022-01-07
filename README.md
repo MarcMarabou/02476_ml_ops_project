@@ -11,12 +11,13 @@ The focus will lie on keeping the test results reproducible through use of versi
 This project will utilize Kornia in order to complete a kaggle image classification challenge. 
 
 ### How to you intend to include the framework into your project
-Kornia implements differential algorithms unlike torchvision for transforms, which will be utilized for data augmentation. Kornia also includes various models such as VisionTransformer, which can be used for classification. 
+Kornia implements differential algorithms unlike torchvision for transforms, which will be utilized for data augmentation. Kornia also includes various models such as Vision Transformer (ViT), which can be used for classification. 
+
 ### What data are you going to run on (initially, may change)
 [Kaggle - Petals to the Metal](https://www.kaggle.com/c/tpu-getting-started/data)
 
 ### What deep learning models do you expect to use
-VisionTransformer or traditional CNN 
+The [ViT](https://kornia.readthedocs.io/en/latest/models/vit.html) model.
 
 # Checklist
 ## Week 1
