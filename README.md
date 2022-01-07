@@ -1,17 +1,25 @@
 # 02476_ml_ops_project
 Progress based on [project checklist](https://github.com/SkafteNicki/dtu_mlops/blob/main/projects/projects.md)
 
-### Final objective
+## Project description
+### Overall goal of the project
+The overall goal of the project is to get familiar with the tools introduced in the course and to use these tools on a leaf classification kaggle challenge.  
 
-Final exercise for today is making a project description. Write around half to one page about:
+The focus will lie on keeping the test results reproducible through use of version control and ensuring that data related to hyperparameters and model weights are properly tagged. This will be done through containerizing the machine learning model or a complete description of the environment used, such that it can be deployed automatically e.g., after successful git commits. 
 
-* Overall goal of the project
-* What framework are you going to use (Kornia, Transformer, Pytorch-Geometrics)
-* How to you intend to include the framework into your project
-* What data are you going to run on (initially, may change)
-* What deep learning models do you expect to use
+### What framework are you going to use (Kornia, Transformer, Pytorch-Geometrics)
+This project will utilize Kornia in order to complete a kaggle image classification challenge. 
 
-### Week 1
+### How to you intend to include the framework into your project
+Kornia implements differential algorithms unlike torchvision for transforms, which will be utilized for data augmentation. Kornia also includes various models such as VisionTransformer, which can be used for classification. 
+### What data are you going to run on (initially, may change)
+[Kaggle - Petals to the Metal](https://www.kaggle.com/c/tpu-getting-started/data)
+
+### What deep learning models do you expect to use
+VisionTransformer or traditional CNN 
+
+# Checklist
+## Week 1
 
 - [x] Create a git repository
 - [x] Make sure that all team members have write access to the github repository
@@ -31,7 +39,7 @@ Final exercise for today is making a project description. Write around half to o
 - [ ] Use wandb to log training progress and other important metrics/artifacts in your code
 - [ ] Use pytorch-lightning (if applicable) to reduce the amount of boilerplate in your code
 
-### Week 2
+## Week 2
 
 - [ ] Write unit tests related to the data part of your code
 - [ ] Write unit tests related to model construction
@@ -45,7 +53,7 @@ Final exercise for today is making a project description. Write around half to o
 - [ ] (optional) Play around with distributed model training
 - [ ] Play around with quantization and compilation for you trained models
 
-### Week 3
+## Week 3
 
 - [ ] Deployed your model locally using TorchServe
 - [ ] Checked how robust your model is towards data drifting
@@ -53,7 +61,7 @@ Final exercise for today is making a project description. Write around half to o
 - [ ] Monitored the system of your deployed model
 - [ ] Monitored the performance of your deployed model
 
-### Additional
+## Additional
 
 - [ ] Revisit your initial project description. Did the project turn out as you wanted?
 - [ ] Make sure all group members have a understanding about all parts of the project
