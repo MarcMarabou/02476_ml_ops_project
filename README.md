@@ -1,6 +1,8 @@
 # 02476_ml_ops_project
 Progress based on [project checklist](https://github.com/SkafteNicki/dtu_mlops/blob/main/projects/projects.md)
 
+Project by: Marc Sun Bøg (s173905), Kasper Schou Telkamp (s170397) og Jacob Bahnsen Schmidt (s184346)
+
 ## Project description
 ### Overall goal of the project
 The overall goal of the project is to work with the *Operations* part of MLOps and familiarize us with the tools introduced in the Machine Learning Operations [(*02476*)](https://kurser.dtu.dk/course/02476) course at DTU.
@@ -16,8 +18,7 @@ This project will utilize Kornia in order to complete a kaggle image classificat
 Kornia implements differential algorithms unlike torchvision for transforms, which will be utilized for data augmentation. Kornia also includes various models such as VisionTransformer, which can be used for classification. 
 
 ### What data are you going to run on (initially, may change)
-The dataset consist of 100 different types of flowers. A more in-depth description of the data, and how to access it, can be found 
-[here](https://www.kaggle.com/c/tpu-getting-started/data).
+[*Petals to the Metal – Flower Classification on TPU*](https://www.kaggle.com/c/tpu-getting-started/data)
 
 ### What deep learning models do you expect to use
 VisionTransformer or traditional CNN 
