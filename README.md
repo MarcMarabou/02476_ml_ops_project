@@ -72,6 +72,24 @@ VisionTransformer or traditional CNN
 
 A short description of the project.
 
+## References
+
+```
+@article{dosovitskiy2020vit,
+  title={An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale},
+  author={Dosovitskiy, Alexey and Beyer, Lucas and Kolesnikov, Alexander and Weissenborn, Dirk and Zhai, Xiaohua and Unterthiner, Thomas and  Dehghani, Mostafa and Minderer, Matthias and Heigold, Georg and Gelly, Sylvain and Uszkoreit, Jakob and Houlsby, Neil},
+  journal={ICLR},
+  year={2021}
+}
+
+@article{steiner2021augreg,
+  title={How to train your ViT? Data, Augmentation, and Regularization in Vision Transformers},
+  author={Steiner, Andreas and Kolesnikov, Alexander and and Zhai, Xiaohua and Wightman, Ross and Uszkoreit, Jakob and Beyer, Lucas},
+  journal={arXiv preprint arXiv:2106.10270},
+  year={2021}
+}
+```
+
 Project Organization
 ------------
 
