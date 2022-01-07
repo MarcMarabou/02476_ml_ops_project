@@ -3,7 +3,7 @@ Progress based on [project checklist](https://github.com/SkafteNicki/dtu_mlops/b
 
 ## Project description
 ### Overall goal of the project
-The overall goal of the project is to work with the *Operations* part of MLOps and familiarize us with the tools introduced in the Machine Learning Operations (02476) course at DTU.
+The overall goal of the project is to work with the *Operations* part of MLOps and familiarize us with the tools introduced in the Machine Learning Operations [(*02476*)](https://kurser.dtu.dk/course/02476) course at DTU.
 
 The focus will lie on keeping the test results reproducible through use of version control and ensuring that data related to hyperparameters and model weights are properly tagged. This will be done through containerizing the machine learning model or a complete description of the environment used, such that it can be deployed automatically e.g., after successful git commits. 
 
