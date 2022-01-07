@@ -1,19 +1,24 @@
 # 02476_ml_ops_project
 Progress based on [project checklist](https://github.com/SkafteNicki/dtu_mlops/blob/main/projects/projects.md)
 
+Project by: Marc Sun Bøg (s173905), Kasper Schou Telkamp (s170397) and Jacob Bahnsen Schmidt (s184346)
+
 ## Project description
 ### Overall goal of the project
-The overall goal of the project is to get familiar with the tools introduced in the course and to use these tools on a leaf classification kaggle challenge.  
+The overall goal of the project is to work with the *Operations* part of MLOps and familiarize us with the tools introduced in the Machine Learning Operations [(*02476*)](https://kurser.dtu.dk/course/02476) course at DTU.
 
 The focus will lie on keeping the test results reproducible through use of version control and ensuring that data related to hyperparameters and model weights are properly tagged. This will be done through containerizing the machine learning model or a complete description of the environment used, such that it can be deployed automatically e.g., after successful git commits. 
+
+These tools will be applied in our project work, which is to solve the [*Petals to the Metal – Flower Classification on TPU*](https://www.kaggle.com/c/tpu-getting-started/) competition on kaggle.
 
 ### What framework are you going to use (Kornia, Transformer, Pytorch-Geometrics)
 This project will utilize Kornia in order to complete a kaggle image classification challenge. 
 
 ### How to you intend to include the framework into your project
 Kornia implements differential algorithms unlike torchvision for transforms, which will be utilized for data augmentation. Kornia also includes various models such as VisionTransformer, which can be used for classification. 
+
 ### What data are you going to run on (initially, may change)
-[Kaggle - Petals to the Metal](https://www.kaggle.com/c/tpu-getting-started/data)
+[*Petals to the Metal – Flower Classification on TPU*](https://www.kaggle.com/c/tpu-getting-started/data)
 
 ### What deep learning models do you expect to use
 VisionTransformer or traditional CNN 
@@ -23,8 +28,8 @@ VisionTransformer or traditional CNN
 
 - [x] Create a git repository
 - [x] Make sure that all team members have write access to the github repository
-- [ ] Create a dedicated environment for you project to keep track of your packages (using conda)
-- [ ] Create the initial file structure using cookiecutter
+- [x] Create a dedicated environment for you project to keep track of your packages (using conda)
+- [x] Create the initial file structure using cookiecutter
 - [ ] Fill out the `make_dataset.py` file such that it downloads whatever data you need and 
 - [ ] Add a model file and a training script and get that running
 - [ ] Remember to fill out the `requirements.txt` file with whatever dependencies that you are using
