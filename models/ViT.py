@@ -1,9 +1,10 @@
-import torch.nn as nn
 import kornia.contrib as K
+import torch.nn as nn
+
 
 class ViT(nn.Module):
     """Vision Transformer Model
-    
+
     Paramters:
         VisionTransformer:
             image_size (int) - the size of the input image. Default: 224.
@@ -19,14 +20,14 @@ class ViT(nn.Module):
         Classification Head:
             embed_dim (int) - the embedding dimension inside the transformer encoder. Default: 768.
             num_classes (int) - an integer representing the number of classes to classify. Default: 10."""
+
     def __init__(self):
         super().__init__()
-        
+
         # We define the model
         self.layers = nn.Sequential(
-            K.VisionTransformer(),
-            K.ClassificationHead(num_classes=104)
+            K.VisionTransformer(), K.ClassificationHead(num_classes=104)
         )
-    
+
     def forward(self, x):
         return self.layers(x)
