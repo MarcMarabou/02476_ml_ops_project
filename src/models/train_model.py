@@ -7,7 +7,7 @@ import torch
 import wandb
 from torch import nn, optim
 from torchvision import datasets
-
+from src.data.FlowerDataset import FlowerDataset
 from models.ViT import ViT
 
 # initializes wandb
@@ -41,16 +41,24 @@ class train(object):
         parser.add_argument("--batch_size", default=64)
         parser.add_argument("--save_model_to", default="trained_model.pt")
         parser.add_argument("--epochs", default=5)
+        parser.add_argument("--disable-cuda", action="store_true", help="Disable CUDA")
         # add any additional argument that you want
         args = parser.parse_args(sys.argv[2:])
+        if not args.disable_cuda and torch.cuda.is_available():
+            args.device = torch.device('cuda')
+        else:
+            args.device = torch.device('cpu')
         print(args)
+
 
         model = ViT()
         model.train()
+        model.to(args.device)
         print(model)
 
         # Load the training data
-        train_set, val_set = NotImplemented
+        train_set = FlowerDataset("data/processed/flowers", "224x224", "train")
+        test_set = FlowerDataset("data/processed/flowers", "224x224", "test")
         trainloader = torch.utils.data.DataLoader(
             train_set, batch_size=args.batch_size, shuffle=True
         )
@@ -68,7 +76,8 @@ class train(object):
         for e in range(epochs):
             running_loss = 0
             for images, targets in trainloader:
-
+                images = images.to(args.device, dtype=torch.float32)
+                targets = targets.to(args.device, dtype=torch.int64)
                 # Clear the gradients, do this because gradients are accumulated
                 optimizer.zero_grad()
 
