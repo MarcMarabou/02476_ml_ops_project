@@ -1,5 +1,6 @@
 from glob import glob
 from os import path
+from typing import Optional
 
 import numpy as np
 import torch
@@ -7,7 +8,22 @@ from torch.utils.data import Dataset
 
 
 class FlowerDataset(Dataset):
-    def __init__(self, flowers_path, size, split="train"):
+    """
+    Flower dataset
+    """
+
+    def __init__(self, flowers_path: str, size: str, split: Optional[str] = "train"):
+        """
+        Constructs a Dataset from PyTorch tensors located at `flowers_path`.
+
+        Args
+            flowers_path : str
+                Path to folder containing .pt files.
+            size : str
+                Image size, e.g., 224x224
+            split : str
+                `test` or `train`
+        """
         files = glob(path.join(flowers_path, split, size, f"{size}-*.pt"))
         self.split = split
         self.ids = []
