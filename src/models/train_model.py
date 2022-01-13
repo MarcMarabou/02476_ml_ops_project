@@ -168,6 +168,7 @@ def main():
         print("Using wandb for logging.")
     else:
         logger = pl_loggers.TensorBoardLogger(
+            args.model_dir if args.model_dir else "tb_logs",
             name="ViT", version=datetime.now().strftime("%Y%m%d%H%M%S"),
         )
         print("No wandb API key provided. Using local TensorBoard.")
