@@ -1,5 +1,8 @@
+import torch
 import kornia.contrib as K
-import torch.nn as nn
+from pytorch_lightning import LigthningModule
+from torch import nn, optim
+
 
 
 class ViT(nn.Module):
@@ -25,9 +28,38 @@ class ViT(nn.Module):
         super().__init__()
 
         # We define the model
-        self.layers = nn.Sequential(
+        self.ViT = nn.Sequential(
             K.VisionTransformer(), K.ClassificationHead(num_classes=104)
         )
 
+        # We define the criterium
+        self.criterium = nn.CrossEntropyLoss()
+
     def forward(self, x):
-        return self.layers(x)
+        return self.ViT(x)
+
+    def training_step(self, batch, batch_idx):
+        images, labels = batch
+        preds = self(images)
+        loss = self.criterium(preds, labels)
+        acc = (labels == preds.argmax(dim=1)).float().mean()
+        self.log('train_loss', loss)
+        self.log('train_acc', acc)
+        return loss
+
+    def validation_step(self, batch, batch_idx):
+        images, labels = batch
+        preds = self(images)
+        loss = self.criterium(preds, labels)
+        acc = (labels == preds.argmax(dim=1)).float().mean()
+        self.log('val_loss', loss)
+        self.log('val_acc', acc)
+
+    def predict_step(self, batch, batch_idx):
+        images, _ = batch
+        preds = self(images)
+        return preds
+    
+    def configure_optimizer(self, args):
+        return optim.Adam(self.parameters(), lr=args.lr)
+
