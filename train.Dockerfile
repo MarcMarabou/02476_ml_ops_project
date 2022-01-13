@@ -48,7 +48,9 @@ RUN gcloud auth login
 # It's already on Google Storage in dvc format...
 COPY data.dvc data.dvc
 RUN dvc init --no-scm
-RUN dvc remote add --default storage gs://dtu-ml-ops-2022-10/data/
+#RUN dvc remote add --default storage gs://dtu-ml-ops-2022-10/data/
+RUN mkdir .dvc/cache/
+RUN gsutil cp -r gs://dtu-ml-ops-2022-10/data/ .dvc/cache/
 RUN dvc pull
 RUN rm -rf .dvc/
 
