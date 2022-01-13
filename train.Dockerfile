@@ -42,7 +42,6 @@ RUN wget -nv \
 
 ENV PATH $PATH:/app/tools/google-cloud-sdk/bin
 RUN echo '[GoogleCompute]\nservice_account = default' > /etc/boto.cfg
-RUN gcloud auth login
 
 # Download data. Is there no smarter way? 
 # It's already on Google Storage in dvc format...
