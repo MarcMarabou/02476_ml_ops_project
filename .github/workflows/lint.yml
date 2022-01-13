@@ -34,6 +34,7 @@ jobs:
         environment-file: environment.yml
         python-version: 3.9.7
         auto-activate-base: false
+        use-only-tar-bz2: true
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -50,6 +51,6 @@ jobs:
     - name: Add & Commit
       uses: EndBug/add-and-commit@v7.5.0
       with:
-        default_author: github-actions
+        default_author: github_actions
 
 
