@@ -1,0 +1,57 @@
+name: "Lint files"
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  build:
+    runs-on: "ubuntu-latest"
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    - name: Cache conda
+      uses: actions/cache@v2
+      env:
+        CACHE_NUMBER: 0
+      with:
+        path: ~/conda_pkgs_dir
+        key:
+          ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{
+          hashFiles('environment.yml') }}
+    - name: Setup Miniconda
+      uses: conda-incubator/setup-miniconda@v2.1.1
+      with:
+        activate-environment: ml_ops
+        environment-file: environment.yml
+        python-version: 3.9.7
+        auto-activate-base: false
+        use-only-tar-bz2: true
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run pytest
+      run: |
+        pip install pytest
+        pytest -v
+    - name: Run isort and black
+      run: |
+        pip install isort black
+        isort .
+        black .
+    - name: Add & Commit
+      uses: EndBug/add-and-commit@v7.5.0
+      with:
+        default_author: github_actions
+        remove: 'setup-miniconda-patched-environment.yml'
+
+
