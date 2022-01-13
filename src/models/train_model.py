@@ -1,103 +1,98 @@
 import argparse
 import os
 import sys
+from tokenize import Intnumber
 
 import matplotlib.pyplot as plt
 import torch
 import wandb
 from torch import nn, optim
 from torchvision import datasets
+from pytorch_lightning import Trainer, loggers as pl_loggers
 
-from models.ViT import ViT
+
+from src.models.ViT import ViT
 from src.data.FlowerDataset import FlowerDataset
 
-# initializes wandb
-wandb.init(project="ml_ops_project", entity="ml_ops_team10")
-
-
-class train(object):
-    """Helper class that will help launch class methods as commands
-    from a single script
+def get_args():
+    """Argument parser.
+    Returns:
+        Dictionary of arguments.
     """
+    parser = argparse.ArgumentParser(
+        description='Script for running training',
+        usage='python train_model.py <command>')
+    parser.add_argument(
+        '--batch-size',
+        type=int,
+        default=64,
+        metavar='N',
+        help='input batch size for training (default: 64)')
+    parser.add_argument(
+        '--min-epochs',
+        type=int,
+        default=1,
+        metavar='N',
+        help='minimum number of epochs to train (default: 1)')
+    parser.add_argument(
+        '--max-epochs',
+        type=int,
+        default=5,
+        metavar='N',
+        help='maximum number of epochs to train (default: 5)')
+    parser.add_argument(
+        '--lr',
+        type=float,
+        default=0.01,
+        metavar='LR',
+        help='learning rate (default: 0.01)')
+    parser.add_argument(
+        '--momentum',
+        type=float,
+        default=0.0,
+        metavar='M',
+        help='ADAM momentum (default: 0.0)')
+    parser.add_argument(
+        '--gpus',
+        type=int,
+        default=0,
+        help='number of GPUs to train on (default: None)')
+    parser.add_argument(
+        '--auto-select-gpus',
+        default=False,
+        help='pick available gpus automatically (default: False)')
+    parser.add_argument(
+        '--model-dir',
+        default=None,
+        help='The directory to store the model (default: None)')
+    parser.add_argument(
+        '--num-workers',
+        type=int,
+        default=0,
+        help='how many subprocesses to use for data loading. 0 means that the data will be loaded in the main process (Default: 0)')
 
-    def __init__(self):
-        parser = argparse.ArgumentParser(
-            description="Script for either training or evaluating",
-            usage="python main.py <command>",
-        )
-        parser.add_argument("command", help="Subcommand to run")
-        args = parser.parse_args(sys.argv[1:2])
-        if not hasattr(self, args.command):
-            print("Unrecognized command")
+    args = parser.parse_args()
+    return args
+    
+def main():
+    # Training settings
+    args = get_args()
 
-            parser.print_help()
-            exit(1)
-        # use dispatch pattern to invoke method with same name
-        getattr(self, args.command)()
+    # Load the training data
+    train_set = FlowerDataset("data/processed/flowers", "224x224", "train")
+    trainloader = torch.utils.data.DataLoader(
+        train_set, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers)
 
-    def train(self):
-        print("Training day and night")
-        parser = argparse.ArgumentParser(description="Training arguments")
-        parser.add_argument("--lr", default=0.001)
-        parser.add_argument("--batch_size", default=64)
-        parser.add_argument("--save_model_to", default="trained_model.pt")
-        parser.add_argument("--epochs", default=5)
-        parser.add_argument("--disable-cuda", action="store_true", help="Disable CUDA")
-        # add any additional argument that you want
-        args = parser.parse_args(sys.argv[2:])
-        if not args.disable_cuda and torch.cuda.is_available():
-            args.device = torch.device("cuda")
-        else:
-            args.device = torch.device("cpu")
-        print(args)
-
-        model = ViT()
-        model.train()
-        model.to(args.device)
-        print(model)
-
-        # Load the training data
-        train_set = FlowerDataset("data/processed/flowers", "224x224", "train")
-        test_set = FlowerDataset("data/processed/flowers", "224x224", "test")
-        trainloader = torch.utils.data.DataLoader(
-            train_set, batch_size=args.batch_size, shuffle=True
-        )
-
-        # Define the loss function, optimizer and hyperparameters
-        criterion = nn.CrossEntropyLoss()
-        optimizer = optim.Adam(model.parameters(), lr=args.lr)
-        epochs = args.epochs
-
-        # Instiate the training losses
-        train_losses = []
-        val_losses = []
-
-        # Training loop
-        for e in range(epochs):
-            running_loss = 0
-            for images, targets in trainloader:
-                images = images.to(args.device, dtype=torch.float32)
-                targets = targets.to(args.device, dtype=torch.int64)
-                # Clear the gradients, do this because gradients are accumulated
-                optimizer.zero_grad()
-
-                # Forward pass, then backward pass, then update weights
-                output = model(images)
-                loss = criterion(output, targets)
-                loss.backward()
-
-                # Take an update step and view the new weights
-                optimizer.step()
-
-                # Add the loss
-                running_loss += loss.item()
-
-            else:
-                print(f"Training loss: {running_loss/len(trainloader)}")
-                # Append the running_loss for each epoch
-                train_losses.append(running_loss / len(trainloader))
-                wandb.log({"loss": running_loss / len(trainloader)})
-
+    model = ViT(args=args)
+    trainer = Trainer(
+        logger=pl_loggers.WandbLogger(project="ml_ops_project", entity="ml_ops_team10"),
+        min_epochs=args.min_epochs,
+        max_epochs=args.max_epochs,
+        default_root_dir=args.model_dir,
+        auto_select_gpus=args.auto_select_gpus,
+        log_every_n_steps=2,
+        gpus=args.gpus)
+    trainer.fit(model, trainloader)
 
 if __name__ == "__main__":
-    train()
+    main()
