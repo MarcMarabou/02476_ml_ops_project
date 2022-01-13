@@ -6,13 +6,14 @@ from tokenize import Intnumber
 import matplotlib.pyplot as plt
 import torch
 import wandb
+from pytorch_lightning import Trainer
+from pytorch_lightning import loggers as pl_loggers
 from torch import nn, optim
 from torchvision import datasets
-from pytorch_lightning import Trainer, loggers as pl_loggers
 
-
-from src.models.ViT import ViT
 from src.data.FlowerDataset import FlowerDataset
+from src.models.ViT import ViT
+
 
 def get_args():
     """Argument parser.
@@ -20,60 +21,68 @@ def get_args():
         Dictionary of arguments.
     """
     parser = argparse.ArgumentParser(
-        description='Script for running training',
-        usage='python train_model.py <command>')
+        description="Script for running training",
+        usage="python train_model.py <command>",
+    )
     parser.add_argument(
-        '--batch-size',
+        "--batch-size",
         type=int,
         default=64,
-        metavar='N',
-        help='input batch size for training (default: 64)')
+        metavar="N",
+        help="input batch size for training (default: 64)",
+    )
     parser.add_argument(
-        '--min-epochs',
+        "--min-epochs",
         type=int,
         default=1,
-        metavar='N',
-        help='minimum number of epochs to train (default: 1)')
+        metavar="N",
+        help="minimum number of epochs to train (default: 1)",
+    )
     parser.add_argument(
-        '--max-epochs',
+        "--max-epochs",
         type=int,
         default=5,
-        metavar='N',
-        help='maximum number of epochs to train (default: 5)')
+        metavar="N",
+        help="maximum number of epochs to train (default: 5)",
+    )
     parser.add_argument(
-        '--lr',
+        "--lr",
         type=float,
         default=0.01,
-        metavar='LR',
-        help='learning rate (default: 0.01)')
+        metavar="LR",
+        help="learning rate (default: 0.01)",
+    )
     parser.add_argument(
-        '--momentum',
+        "--momentum",
         type=float,
         default=0.0,
-        metavar='M',
-        help='ADAM momentum (default: 0.0)')
+        metavar="M",
+        help="ADAM momentum (default: 0.0)",
+    )
     parser.add_argument(
-        '--gpus',
-        type=int,
-        default=0,
-        help='number of GPUs to train on (default: None)')
+        "--gpus", type=int, default=0, help="number of GPUs to train on (default: None)"
+    )
     parser.add_argument(
-        '--auto-select-gpus',
+        "--auto-select-gpus",
         default=False,
-        help='pick available gpus automatically (default: False)')
+        help="pick available gpus automatically (default: False)",
+    )
     parser.add_argument(
-        '--model-dir',
+        "--model-dir",
         default=None,
-        help='The directory to store the model (default: None)')
+        help="The directory to store the model (default: None)",
+    )
     parser.add_argument(
-        '--num-workers',
+        "--num-workers",
         type=int,
         default=0,
-        help='how many subprocesses to use for data loading. 0 means that the data will be loaded in the main process (Default: 0)')
+        help="how many subprocesses to use for data loading. 0 means that the data will be loaded in the main process (Default: 0)",
+    )
 
     args = parser.parse_args()
     return args
-    
+
+
 def main():
     # Training settings
     args = get_args()
@@ -81,7 +90,11 @@ def main():
     # Load the training data
     train_set = FlowerDataset("data/processed/flowers", "224x224", "train")
     trainloader = torch.utils.data.DataLoader(
-        train_set, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers)
+        train_set,
+        batch_size=args.batch_size,
+        shuffle=True,
+        num_workers=args.num_workers,
+    )
 
     model = ViT(args=args)
     trainer = Trainer(
@@ -91,8 +104,10 @@ def main():
         default_root_dir=args.model_dir,
         auto_select_gpus=args.auto_select_gpus,
         log_every_n_steps=2,
-        gpus=args.gpus)
+        gpus=args.gpus,
+    )
     trainer.fit(model, trainloader)
+
 
 if __name__ == "__main__":
     main()
