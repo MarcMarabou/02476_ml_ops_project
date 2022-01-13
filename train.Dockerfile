@@ -23,8 +23,8 @@ COPY src/ src/
 # RUN conda env update --name ml_ops --file environment.yml
 # SHELL ["conda", "run", "--no-capture-output", "-n", "ml_ops", "/bin/bash", "-c"]
 
-RUN pip install --upgrade pip --no-cache-dir
-RUN pip install -r requirements.txt --no-cache-dir
+RUN pip install --upgrade pip --no-cache-dir && \
+    pip install -r requirements.txt --no-cache-dir
 
 # Installs google cloud sdk
 RUN wget -nv \
@@ -42,15 +42,5 @@ RUN wget -nv \
 
 ENV PATH $PATH:/app/tools/google-cloud-sdk/bin
 RUN echo '[GoogleCompute]\nservice_account = default' > /etc/boto.cfg
-
-# Download data. Is there no smarter way? 
-# It's already on Google Storage in dvc format...
-COPY data.dvc data.dvc
-RUN dvc init --no-scm
-#RUN dvc remote add --default storage gs://dtu-ml-ops-2022-10/data/
-RUN mkdir .dvc/cache/
-RUN gsutil cp -r gs://dtu-ml-ops-2022-10/data/ .dvc/cache/
-RUN dvc pull
-RUN rm -rf .dvc/
 
 ENTRYPOINT [ "python", "-u", "src/models/train_model.py" ]
