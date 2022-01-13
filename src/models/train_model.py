@@ -91,10 +91,12 @@ class train(object):
 
                 # Add the loss
                 running_loss += loss.item()
+                
             else:
                 print(f"Training loss: {running_loss/len(trainloader)}")
                 # Append the running_loss for each epoch
                 train_losses.append(running_loss / len(trainloader))
+                wandb.log({"loss": running_loss/len(trainloader)})
 
 
 if __name__ == "__main__":
