@@ -1,4 +1,5 @@
 import argparse
+from datetime import datetime
 import os
 import sys
 
@@ -160,6 +161,7 @@ def main():
     logger = False
     if args.wandb_api_key:
         logger = pl_loggers.WandbLogger(
+            name="ViT", version=datetime.now().strftime("%Y%m%d%H%M%S"),
             project="ml_ops_project", entity="ml_ops_team10", config=args
         )
         wandb.login(key=args.wandb_api_key)
