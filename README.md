@@ -46,7 +46,7 @@ The [ViT](https://kornia.readthedocs.io/en/latest/models/vit.html) model.
 - [x] Write unit tests related to model construction
 - [ ] Calculate the coverage.
 - [x] Get some continues integration running on the github repository
-- [ ] (optional) Create a new project on `gcp` and invite all group members to it
+- [x] (optional) Create a new project on `gcp` and invite all group members to it
 - [ ] Create a data storage on `gcp` for you data
 - [ ] Create a trigger workflow for automatically building your docker images
 - [ ] Get your model training on `gcp`

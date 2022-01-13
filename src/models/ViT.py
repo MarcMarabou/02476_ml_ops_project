@@ -30,7 +30,19 @@ class ViT(LightningModule):
 
         # We define the model
         self.ViT = nn.Sequential(
-            K.VisionTransformer(), K.ClassificationHead(num_classes=104)
+            K.VisionTransformer(
+                image_size=args.image_size,
+                patch_size=args.patch_size,
+                embed_dim=args.embed_dim,
+                num_heads=args.num_heads,
+                dropout_rate=args.dropout_rate,
+                dropout_attn=args.dropout_attn,
+                depth=args.depth
+            ), 
+            K.ClassificationHead(
+                embed_size=args.embed_dim,
+                num_classes=args.num_classes
+            )
         )
 
         # We define the criterium
@@ -41,7 +53,7 @@ class ViT(LightningModule):
 
     def training_step(self, batch, batch_idx):
         images, labels = batch
-        images = images.type(torch.FloatTensor)
+        images = images
         preds = self(images)
         loss = self.criterium(preds, labels)
         acc = (labels == preds.argmax(dim=1)).float().mean()
@@ -51,7 +63,7 @@ class ViT(LightningModule):
 
     def validation_step(self, batch, batch_idx):
         images, labels = batch
-        images = images.type(torch.FloatTensor)
+        images = images
         preds = self(images)
         loss = self.criterium(preds, labels)
         acc = (labels == preds.argmax(dim=1)).float().mean()
