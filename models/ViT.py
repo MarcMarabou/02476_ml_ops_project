@@ -1,11 +1,11 @@
 import torch
 import kornia.contrib as K
-from pytorch_lightning import LigthningModule
-from torch import nn, optim
+from pytorch_lightning import LightningModule
+from torch import Tensor, nn, optim
 
 
 
-class ViT(nn.Module):
+class ViT(LightningModule):
     """Vision Transformer Model
 
     Paramters:
@@ -40,26 +40,31 @@ class ViT(nn.Module):
 
     def training_step(self, batch, batch_idx):
         images, labels = batch
+        print(images.type())
+        images = images.type(torch.FloatTensor)
+        print(images.type())
+        print(labels.type())
         preds = self(images)
+        print('hey')
         loss = self.criterium(preds, labels)
-        acc = (labels == preds.argmax(dim=1)).float().mean()
+        #acc = (labels == preds.argmax(dim=1)).float().mean()
         self.log('train_loss', loss)
-        self.log('train_acc', acc)
+        #self.log('train_acc', acc)
         return loss
 
     def validation_step(self, batch, batch_idx):
         images, labels = batch
         preds = self(images)
         loss = self.criterium(preds, labels)
-        acc = (labels == preds.argmax(dim=1)).float().mean()
+        #acc = (labels == preds.argmax(dim=1)).float().mean()
         self.log('val_loss', loss)
-        self.log('val_acc', acc)
+        #self.log('val_acc', acc)
 
     def predict_step(self, batch, batch_idx):
         images, _ = batch
         preds = self(images)
         return preds
     
-    def configure_optimizer(self, args):
-        return optim.Adam(self.parameters(), lr=args.lr)
+    def configure_optimizers(self):
+        return optim.Adam(self.parameters(), lr=0.01)
 
