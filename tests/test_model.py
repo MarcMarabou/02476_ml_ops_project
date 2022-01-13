@@ -1,12 +1,14 @@
 import pytest
 import torch
+import argparse
 
 from src.models.ViT import ViT
-
+from src.models.train_model import get_args
 
 @pytest.mark.skip(reason="Model is not working currently: 01-13-2022")
 def test_predictions():
-    model = ViT()
+    args = get_args()
+    model = ViT(args=args)
     model.train()
     randImage = torch.rand([1, 3, 224, 224])
     preds = model(randImage)
