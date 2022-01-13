@@ -10,7 +10,7 @@ from torch import nn, optim
 from torchvision import datasets
 from pytorch_lightning import Trainer, loggers as pl_loggers
 
-from models.ViT import ViT
+from src.models.ViT import ViT
 from src.data.FlowerDataset import FlowerDataset
 
 def get_args():
@@ -80,15 +80,16 @@ def main():
     # Load the training data
     train_set = FlowerDataset("data/processed/flowers", "224x224", "train")
     trainloader = torch.utils.data.DataLoader(
-        train_set, batch_size=args.batch_size, shuffle=True)
+        train_set, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers)
 
-    model = ViT()
+    model = ViT(args=args)
     trainer = Trainer(
-        logger=pl_loggers.WandbLogger(project="ml_ops_project"),
+        logger=pl_loggers.WandbLogger(project="ml_ops_project", entity="ml_ops_team10"),
         min_epochs=args.min_epochs,
         max_epochs=args.max_epochs,
         default_root_dir=args.model_dir,
         auto_select_gpus=args.auto_select_gpus,
+        log_every_n_steps=2,
         gpus=args.gpus)
     trainer.fit(model, trainloader)
 
