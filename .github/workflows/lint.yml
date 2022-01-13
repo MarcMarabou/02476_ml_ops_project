@@ -11,11 +11,22 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    # - name: Set up Python3.8
-    #   uses: actions/setup-python@v2
-    #   with:
-    #     python-version: 3.8
-    #     cache: 'pip'
+    - name: Cache pip
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+      - name: Cache conda
+        uses: actions/cache@v2
+        env:
+          CACHE_NUMBER: 0
+        with:
+          path: ~/conda_pkgs_dir
+          key:
+            ${{ runner.os }}-conda-${{ env.CACHE_NUMBER }}-${{
+            hashFiles('environment.yml') }}
     - name: Setup Miniconda
       uses: conda-incubator/setup-miniconda@v2.1.1
       with:

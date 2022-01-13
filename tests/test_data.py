@@ -1,9 +1,11 @@
 from src.data.FlowerDataset import FlowerDataset
+import os
 import pytest
 
 PATH = "data/processed/flowers"
 SIZE = "224x224"
 
+@pytest.mark.skipif(not os.path.exists(PATH), reason="Data doesn't exist")
 @pytest.mark.parametrize("split", ["train", "test"])
 def test_shape(split: str):
     ds = FlowerDataset(PATH, SIZE, split)
