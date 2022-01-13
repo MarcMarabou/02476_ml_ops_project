@@ -43,4 +43,12 @@ RUN wget -nv \
 ENV PATH $PATH:/app/tools/google-cloud-sdk/bin
 RUN echo '[GoogleCompute]\nservice_account = default' > /etc/boto.cfg
 
+# Download data. Is there no smarter way? 
+# It's already on Google Storage in dvc format...
+COPY data.dvc data.dvc
+RUN dvc init --no-scm
+RUN dvc remote add --default storage gs://dtu-ml-ops-2022-10/data/
+RUN dvc pull
+RUN rm -rf .dvc/
+
 ENTRYPOINT [ "python", "-u", "src/models/train_model.py" ]
