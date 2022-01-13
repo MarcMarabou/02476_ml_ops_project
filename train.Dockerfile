@@ -15,7 +15,7 @@ RUN mkdir /app
 WORKDIR /app
 
 COPY environment.yml environment.yml
-COPY requirements.txt requirements.txt
+COPY requirements_docker.txt requirements.txt
 COPY setup.py setup.py
 COPY src/ src/
 
@@ -25,7 +25,6 @@ COPY src/ src/
 
 RUN pip install --upgrade pip --no-cache-dir
 # Conda replacement
-RUN pip install torch torchvision torchaudio --no-cache-dir 
 RUN pip install -r requirements.txt --no-cache-dir
 
 # Installs google cloud sdk
