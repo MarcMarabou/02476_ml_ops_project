@@ -158,7 +158,7 @@ def main():
     # Training settings
     args = get_args()
 
-    logger = False
+    logger = None
     if args.wandb_api_key:
         logger = pl_loggers.WandbLogger(
             name="ViT", version=datetime.now().strftime("%Y%m%d%H%M%S"),
@@ -167,7 +167,11 @@ def main():
         wandb.login(key=args.wandb_api_key)
         print("Using wandb for logging.")
     else:
-        print("No wandb API key provided. Logging disabled.")
+        logger = pl_loggers.TensorBoardLogger(
+            name="ViT", version=datetime.now().strftime("%Y%m%d%H%M%S"),
+        )
+        print("No wandb API key provided. Using local TensorBoard.")
+
 
     # Load the training data
     train_set = FlowerDataset("data/processed/flowers", "224x224", "train")
