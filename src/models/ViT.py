@@ -1,8 +1,7 @@
-import torch
 import kornia.contrib as K
+import torch
 from pytorch_lightning import LightningModule
 from torch import Tensor, nn, optim
-
 
 
 class ViT(LightningModule):
@@ -46,8 +45,8 @@ class ViT(LightningModule):
         preds = self(images)
         loss = self.criterium(preds, labels)
         acc = (labels == preds.argmax(dim=1)).float().mean()
-        self.log('train_loss', loss)
-        self.log('train_acc', acc)
+        self.log("train_loss", loss)
+        self.log("train_acc", acc)
         return loss
 
     def validation_step(self, batch, batch_idx):
@@ -56,15 +55,14 @@ class ViT(LightningModule):
         preds = self(images)
         loss = self.criterium(preds, labels)
         acc = (labels == preds.argmax(dim=1)).float().mean()
-        self.log('val_loss', loss)
-        self.log('val_acc', acc)
+        self.log("val_loss", loss)
+        self.log("val_acc", acc)
 
     def predict_step(self, batch, batch_idx):
         images, _ = batch
         preds = self(images)
         return preds
-    
+
     def configure_optimizers(self):
         args = self.args
         return optim.Adam(self.parameters(), lr=args.lr)
-
