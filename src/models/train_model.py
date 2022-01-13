@@ -7,8 +7,9 @@ import torch
 import wandb
 from torch import nn, optim
 from torchvision import datasets
-from src.data.FlowerDataset import FlowerDataset
+
 from models.ViT import ViT
+from src.data.FlowerDataset import FlowerDataset
 
 # initializes wandb
 wandb.init(project="ml_ops_project", entity="ml_ops_team10")
@@ -45,11 +46,10 @@ class train(object):
         # add any additional argument that you want
         args = parser.parse_args(sys.argv[2:])
         if not args.disable_cuda and torch.cuda.is_available():
-            args.device = torch.device('cuda')
+            args.device = torch.device("cuda")
         else:
-            args.device = torch.device('cpu')
+            args.device = torch.device("cpu")
         print(args)
-
 
         model = ViT()
         model.train()
@@ -91,12 +91,12 @@ class train(object):
 
                 # Add the loss
                 running_loss += loss.item()
-                
+
             else:
                 print(f"Training loss: {running_loss/len(trainloader)}")
                 # Append the running_loss for each epoch
                 train_losses.append(running_loss / len(trainloader))
-                wandb.log({"loss": running_loss/len(trainloader)})
+                wandb.log({"loss": running_loss / len(trainloader)})
 
 
 if __name__ == "__main__":
