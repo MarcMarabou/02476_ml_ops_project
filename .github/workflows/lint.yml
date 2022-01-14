@@ -33,7 +33,7 @@ jobs:
         pip install pytest
         pip install coverage
         pytest -v 
-        coverage html
+        coverage report
     - name: Run isort and black
       run: |
         pip install isort black
