@@ -5,6 +5,8 @@ __pycache__/
 # C extensions
 *.so
 
+
+
 # Distribution / packaging
 .Python
 env/
@@ -75,8 +77,9 @@ target/
 # Jupyter NB Checkpoints
 .ipynb_checkpoints/
 
-# exclude data from source control by default
+# exclude data and keys from source control by default
 /data/
+/keys/
 
 # Mac OS-specific storage files
 .DS_Store
