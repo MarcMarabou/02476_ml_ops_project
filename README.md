@@ -20,7 +20,8 @@ Here is a sample of 100 random training images:
 ![alt text](https://github.com/MarcMarabou/02476_ml_ops_project/blob/main/reports/figures/sampledTrainingImages.png?raw=true)
 
 ### What deep learning models do you expect to use
-The [ViT](https://kornia.readthedocs.io/en/latest/models/vit.html) model.
+The [ViT](https://kornia.readthedocs.io/en/latest/models/vit.html) model:
+![alt text](https://github.com/google-research/vision_transformer/raw/main/vit_figure.png?raw=true)
 
 # Checklist
 ## Week 1
