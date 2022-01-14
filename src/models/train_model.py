@@ -182,8 +182,9 @@ def main():
 
     if(args.data_path.startswith("gs://")):
         print("Downloading data from Google Cloud Storage")
-        gcsfs.GCSFileSystem().get(args.data_path, "data/flowers/processed")
-        args.data_path = "data/flowers/processed"
+        gcsfs.GCSFileSystem().get(args.data_path, "tmp", recursive=True)
+        args.data_path = "tmp"
+        print("Data downloaded to ", args.data_path)
 
     # Load the training data
     train_set = FlowerDataset(args.data_path, "224x224", "train")
