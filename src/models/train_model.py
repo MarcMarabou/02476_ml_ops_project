@@ -1,12 +1,12 @@
 import argparse
-from datetime import datetime
 import os
 import sys
+from datetime import datetime
 
+import gcsfs
 import matplotlib.pyplot as plt
 import torch
 import wandb
-import gcsfs
 from pytorch_lightning import Trainer
 from pytorch_lightning import loggers as pl_loggers
 from torch import nn, optim
@@ -140,7 +140,7 @@ def get_args():
         "--data-path",
         default="data/processed/flowers",
         metavar="PATH",
-        help="Path to data files (Default: \"data/processed/flowers\")"
+        help='Path to data files (Default: "data/processed/flowers")',
     )
     parser.add_argument(
         "--num-workers",
@@ -168,19 +168,23 @@ def main():
     logger = None
     if args.wandb_api_key:
         logger = pl_loggers.WandbLogger(
-            name="ViT", version=datetime.now().strftime("%Y%m%d%H%M%S"),
-            project="ml_ops_project", entity="ml_ops_team10", config=args
+            name="ViT",
+            version=datetime.now().strftime("%Y%m%d%H%M%S"),
+            project="ml_ops_project",
+            entity="ml_ops_team10",
+            config=args,
         )
         wandb.login(key=args.wandb_api_key)
         print("Using wandb for logging.")
     else:
         logger = pl_loggers.TensorBoardLogger(
             args.model_dir if args.model_dir else "tb_logs",
-            name="ViT", version=datetime.now().strftime("%Y%m%d%H%M%S"),
+            name="ViT",
+            version=datetime.now().strftime("%Y%m%d%H%M%S"),
         )
         print("No wandb API key provided. Using local TensorBoard.")
 
-    if(args.data_path.startswith("gs://")):
+    if args.data_path.startswith("gs://"):
         print("Downloading data from Google Cloud Storage")
         gcsfs.GCSFileSystem().get(args.data_path, "tmp", recursive=True)
         args.data_path = "tmp"

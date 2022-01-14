@@ -44,7 +44,7 @@ The [ViT](https://kornia.readthedocs.io/en/latest/models/vit.html) model.
 
 - [x] Write unit tests related to the data part of your code
 - [x] Write unit tests related to model construction
-- [ ] Calculate the coverage.
+- [x] Calculate the coverage.
 - [x] Get some continues integration running on the github repository
 - [x] (optional) Create a new project on `gcp` and invite all group members to it
 - [x] Create a data storage on `gcp` for you data

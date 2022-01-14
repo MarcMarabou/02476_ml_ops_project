@@ -4,8 +4,8 @@ from typing import Optional
 
 import numpy as np
 import torch
-from torch.utils.data import Dataset
 import torchvision.transforms as transforms
+from torch.utils.data import Dataset
 
 
 class FlowerDataset(Dataset):
@@ -18,7 +18,9 @@ class FlowerDataset(Dataset):
         flowers_path: str,
         size: str,
         split: Optional[str] = "train",
-        transforms: Optional[transforms.Compose] = transforms.Compose([transforms.ToTensor()]),
+        transforms: Optional[transforms.Compose] = transforms.Compose(
+            [transforms.ToTensor()]
+        ),
     ):
         """
         Constructs a Dataset from PyTorch tensors located at `flowers_path`.
