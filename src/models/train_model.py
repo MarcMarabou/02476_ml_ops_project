@@ -6,6 +6,7 @@ import sys
 import matplotlib.pyplot as plt
 import torch
 import wandb
+import gcsfs
 from pytorch_lightning import Trainer
 from pytorch_lightning import loggers as pl_loggers
 from torch import nn, optim
@@ -136,6 +137,12 @@ def get_args():
         help="The directory to store the model (Default: None)",
     )
     parser.add_argument(
+        "--data-path",
+        default="data/processed/flowers",
+        metavar="PATH",
+        help="Path to data files (Default: \"data/processed/flowers\")"
+    )
+    parser.add_argument(
         "--num-workers",
         type=int,
         default=0,
@@ -173,10 +180,14 @@ def main():
         )
         print("No wandb API key provided. Using local TensorBoard.")
 
+    if(args.data_path.startswith("gs://")):
+        print("Downloading data from Google Cloud Storage")
+        gcsfs.GCSFileSystem().get(args.data_path, "data/flowers/processed")
+        args.data_path = "data/flowers/processed"
 
     # Load the training data
-    train_set = FlowerDataset("data/processed/flowers", "224x224", "train")
-    val_set = FlowerDataset("data/processed/flowers", "224x224", "val")
+    train_set = FlowerDataset(args.data_path, "224x224", "train")
+    val_set = FlowerDataset(args.data_path, "224x224", "val")
     trainloader = torch.utils.data.DataLoader(
         train_set,
         batch_size=args.batch_size,
