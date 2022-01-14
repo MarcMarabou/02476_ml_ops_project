@@ -1,15 +1,18 @@
+## Conda setup
+#FROM continuumio/miniconda3:latest
+#RUN gcloud auth activate-service-account g27-bucket@mlops-g27.iam.gserviceaccount.com --key-file=key_file.json
+#FROM gcr.io/cloud-builders/gsutil
+
+#RUN dvc remote modify --local remote_storage \
+#        credentialpath key_file.json
+
 # GPU runtime
 FROM nvidia/cuda:10.2-cudnn8-runtime
 
-## Conda setup
-#FROM continuumio/miniconda3:latest
-
-FROM python:3.9.7-slim
-
 # Install python 
 RUN apt update && \
-apt install --no-install-recommends -y build-essential gcc wget && \
-apt clean && rm -rf /var/lib/apt/lists/*
+    apt install --no-install-recommends -y build-essential gcc wget && \
+    apt clean && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /app
 WORKDIR /app
@@ -18,10 +21,16 @@ COPY requirements_docker.txt requirements.txt
 COPY setup.py setup.py
 COPY src/ src/
 
-# Figure out why conda is so awful in a docker container
-# RUN conda env update --name ml_ops --file environment.yml
-# SHELL ["conda", "run", "--no-capture-output", "-n", "ml_ops", "/bin/bash", "-c"]
+ENV PATH=/root/miniconda3/bin:$PATH
+ARG PATH=/root/miniconda3/bin:$PATH
 
+RUN wget -nv \
+    https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
+    mkdir /root/.conda && \
+    /bin/bash Miniconda3-latest-Linux-x86_64.sh -b && \
+    rm -f Miniconda3-latest-Linux-x86_64.sh
+
+RUN conda install python==3.9.7
 RUN pip install --upgrade pip --no-cache-dir
 RUN pip install -r requirements.txt --no-cache-dir
 
