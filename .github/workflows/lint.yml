@@ -33,9 +33,10 @@ jobs:
         pip install pytest
         pytest -v 
     - name: Run coverage html
-    - run: |
+      run: |
         pip install coverage
         coverage html
+        rm htmlcov/.gitignore
     - name: Run isort and black
       run: |
         pip install isort black
