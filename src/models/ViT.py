@@ -57,7 +57,7 @@ class ViT(LightningModule):
         images = images
         output = self(images)
         loss = self.criterium(output, labels)
-        preds = F.logsoftmax(output, 1)
+        preds = F.log_softmax(output, 1)
         acc = (labels == preds.argmax(dim=1)).float().mean()
         self.log("train_loss", loss)
         self.log("train_acc", acc)
@@ -68,7 +68,7 @@ class ViT(LightningModule):
         images = images
         output = self(images)
         loss = self.criterium(output, labels)
-        preds = F.logsoftmax(output, 1)
+        preds = F.log_softmax(output, 1)
         acc = (labels == preds.argmax(dim=1)).float().mean()
         self.log("val_loss", loss)
         self.log("val_acc", acc)
