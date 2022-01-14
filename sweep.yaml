@@ -21,6 +21,8 @@ parameters:
     max: 1
   batch-size:
     values: [64, 128, 256]
+  max-epochs:
+    value: 30
   gpus:
     value: 1
   num-workers:
@@ -28,7 +30,7 @@ parameters:
   data-path:
     value: "data/processed/flowers/"
   model-dir:
-    value: "gs://dtu-ml-ops-2022-10/models/"
+    value: "models/"
   wandb-api-key:
     value: "FILL"
 

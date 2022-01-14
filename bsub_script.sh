@@ -1,6 +1,6 @@
 #!/bin/sh
 #BSUB -q gpua100
-#BSUB -J "Cycle_GAN"
+#BSUB -J "ViT"
 #BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
 #BSUB -W 23:59
@@ -18,4 +18,7 @@
 module load cuda/10.2
 module load cudnn/v8.2.2.26-prod-cuda-10.2
 
-~/miniconda3/envs/ml_ops/bin/wandb agent FILL
+export PYTHONPATH=~/miniconda3/envs/ml_ops/bin/:$PYTHONPATH
+export PATH=~/miniconda3/envs/ml_ops/bin/:$PATH
+
+wandb agent fill
