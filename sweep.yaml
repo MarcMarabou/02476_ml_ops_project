@@ -1,0 +1,49 @@
+program: src/models/train_model.py
+method: bayes
+metric:
+  name: validation_loss
+  goal: minimize
+parameters:
+  lr:
+    min: 0.0001
+    max: 0.1
+  depth:
+    values: [3, 9, 12]
+  num-heads:
+    values: [3, 9, 12]
+  embed-dim:
+    values: [256, 512, 768]
+  dropout-attn:
+    min: 0
+    max: 1
+  dropout-rate:
+    min: 0
+    max: 1
+  batch-size:
+    values: [64, 128, 256]
+  max-epochs:
+    value: 30
+  gpus:
+    value: 1
+  num-workers:
+    value: 8
+  data-path:
+    value: "data/processed/flowers/"
+  model-dir:
+    value: "models/"
+  wandb-api-key:
+    value: "FILL"
+
+# --gpus=1 \
+# --depth=12 \
+# --num-heads=12 \
+# --embed-dim=768 \
+# --dropout-attn=0.1 \
+# --dropout-rate=0.1 \
+# --lr=0.01 \
+# --batch-size=128 \
+# --max-epochs=30 \
+# --num-workers=8 \
+# --data-path=data/processed/flowers/ \
+# --model-dir=gs://dtu-ml-ops-2022-10/models/
+# --wandb-api-key=FILL
