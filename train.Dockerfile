@@ -22,8 +22,8 @@ COPY src/ src/
 # RUN conda env update --name ml_ops --file environment.yml
 # SHELL ["conda", "run", "--no-capture-output", "-n", "ml_ops", "/bin/bash", "-c"]
 
-RUN pip install --upgrade pip --no-cache-dir && \
-    pip install -r requirements.txt --no-cache-dir
+RUN pip install --upgrade pip --no-cache-dir
+RUN pip install -r requirements.txt --no-cache-dir
 
 # Installs google cloud sdk
 RUN wget -nv \

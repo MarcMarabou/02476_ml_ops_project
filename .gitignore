@@ -90,3 +90,6 @@ target/
 /data
 
 wandb/
+
+# Ignore model checkpoints
+*.ckpt
