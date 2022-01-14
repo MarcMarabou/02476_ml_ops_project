@@ -3,13 +3,11 @@ import os
 import sys
 from tokenize import Intnumber
 
-import matplotlib.pyplot as plt
-import torch
-import wandb
-from torch import nn, optim
-from torchvision import datasets
-from pytorch_lightning import Trainer, loggers as pl_loggers
 
+import torch
+
+from pytorch_lightning import Trainer, loggers as pl_loggers
+from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
 
 from src.models.ViT import ViT
 from src.data.FlowerDataset import FlowerDataset
@@ -63,13 +61,19 @@ def get_args():
         help='pick available gpus automatically (default: False)')
     parser.add_argument(
         '--model-dir',
-        default=None,
+        default='models/',
         help='The directory to store the model (default: None)')
     parser.add_argument(
         '--num-workers',
         type=int,
         default=0,
         help='how many subprocesses to use for data loading. 0 means that the data will be loaded in the main process (Default: 0)')
+    parser.add_arguement(
+        '--fast-dev-run',
+        type=int,
+        default=False,
+        help='Runs n if set to n (int) of train, val and test to find any bugs (ie: a sort of unit test) (Default: False).'
+    )
 
     args = parser.parse_args()
     return args
@@ -80,19 +84,27 @@ def main():
 
     # Load the training data
     train_set = FlowerDataset("data/processed/flowers", "224x224", "train")
-    trainloader = torch.utils.data.DataLoader(
+    train_loader = torch.utils.data.DataLoader(
         train_set, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers)
+    val_set = FlowerDataset("data/processed/flowers", "224x224", "val")
+    val_loader = torch.utils.data.DataLoader(
+        val_set, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers)
+
+    checkpoint_callback = ModelCheckpoint(
+        dirpath=args.model_dir, monitor="val_loss", mode="min")
+    early_stopping_callback = EarlyStopping(
+        monitor="val_loss", patience=3, verbose=True, mode="min")
 
     model = ViT(args=args)
     trainer = Trainer(
         logger=pl_loggers.WandbLogger(project="ml_ops_project", entity="ml_ops_team10"),
+        callbacks=[checkpoint_callback, early_stopping_callback],
         min_epochs=args.min_epochs,
         max_epochs=args.max_epochs,
-        default_root_dir=args.model_dir,
         auto_select_gpus=args.auto_select_gpus,
         log_every_n_steps=2,
         gpus=args.gpus)
-    trainer.fit(model, trainloader)
+    trainer.fit(model, train_dataloader=train_loader, val_dataloaders=val_loader)
 
 if __name__ == "__main__":
     main()
