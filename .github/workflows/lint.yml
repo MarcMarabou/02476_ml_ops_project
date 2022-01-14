@@ -31,9 +31,9 @@ jobs:
     - name: Run pytest
       run: |
         pip install pytest
-        pip install coverage
-        pytest -v 
-        coverage html .
+        pip install coverage 
+        coverage run -m pytest -v
+        coverage html
     - name: Run isort and black
       run: |
         pip install isort black
