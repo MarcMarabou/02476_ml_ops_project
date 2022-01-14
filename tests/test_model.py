@@ -1,9 +1,11 @@
-import pytest
-import torch
 import argparse
 
-from src.models.ViT import ViT
+import pytest
+import torch
+
 from src.models.train_model import get_args
+from src.models.ViT import ViT
+
 
 @pytest.mark.skip(reason="Model is not working currently: 01-13-2022")
 def test_predictions():

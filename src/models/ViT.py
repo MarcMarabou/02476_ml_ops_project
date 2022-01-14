@@ -37,12 +37,11 @@ class ViT(LightningModule):
                 num_heads=args.num_heads,
                 dropout_rate=args.dropout_rate,
                 dropout_attn=args.dropout_attn,
-                depth=args.depth
-            ), 
+                depth=args.depth,
+            ),
             K.ClassificationHead(
-                embed_size=args.embed_dim,
-                num_classes=args.num_classes
-            )
+                embed_size=args.embed_dim, num_classes=args.num_classes
+            ),
         )
 
         # We define the criterium
