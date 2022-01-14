@@ -35,7 +35,7 @@ jobs:
     - name: Run coverage html
       run: |
         pip install coverage
-        coverage html
+        coverage html.
     - name: Run isort and black
       run: |
         pip install isort black
