@@ -16,6 +16,9 @@ Kornia implements differential algorithms unlike torchvision for transforms, whi
 ### What data are you going to run on (initially, may change)
 [Kaggle - Petals to the Metal](https://www.kaggle.com/c/tpu-getting-started/data)
 
+Here is a sample of 100 random training images:
+![alt text](https://github.com/[MarcMarabou]/[02476_ml_ops_project]/blob/[main]/reports/figures/sampledTrainingImages.png?raw=true)
+
 ### What deep learning models do you expect to use
 The [ViT](https://kornia.readthedocs.io/en/latest/models/vit.html) model.
 
