@@ -24,6 +24,9 @@ COPY src/ src/
 ENV PATH=/root/miniconda3/bin:$PATH
 ARG PATH=/root/miniconda3/bin:$PATH
 
+ENV GOOGLE_APPLICATION_CREDENTIALS keys/aerobic-datum-337911-fcd8e3b6bec8.json
+ENV GOOGLE_PROJECT_ID aerobic-datum-337911-fcd8e3b6bec8
+
 RUN wget -nv \
     https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
     mkdir /root/.conda && \
@@ -49,6 +52,13 @@ RUN wget -nv \
     rm -rf /app/tools/google-cloud-sdk/.install/.backup
 
 ENV PATH $PATH:/app/tools/google-cloud-sdk/bin
-RUN echo '[GoogleCompute]\nservice_account = default' > /etc/boto.cfg
+RUN echo '[Credentials]\ngs_service_key_file = /keys/aerobic-datum-337911-fcd8e3b6bec8.json' \ 
+    > /etc/boto.cfg
+RUN mkdir /keys
+
+COPY keys/aerobic-datum-337911-fcd8e3b6bec8.json $GOOGLE_APPLICATION_CREDENTIALS
+
+RUN gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS --project $GOOGLE_PROJECT_ID
+RUN gcloud config set project $GOOGLE_PROJECT_ID
 
 ENTRYPOINT [ "python", "-u", "src/models/train_model.py" ]
