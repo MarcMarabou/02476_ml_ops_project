@@ -88,10 +88,10 @@ def main():
         nn.Flatten()
     )
 
-    detector = fit_detector(trainloader, feature_extractor)
+    drift_detector = fit_detector(trainloader, feature_extractor)
 
     if args.model_dir:
-        torch.save(detector, os.path.join(args.model_dir, 'trained_models', current_time, 'drift_detector.pt'))
+        torch.save(drift_detector, os.path.join(args.model_dir, 'trained_models', current_time, 'drift_detector.pt'))
 
 if __name__ == "__main__":
     main()
