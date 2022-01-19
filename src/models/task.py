@@ -122,10 +122,10 @@ def get_args():
         help="The directory to store the model (Default: None)",
     )
     parser.add_argument(
-        '--load-model-ckpt',
+        "--load-model-ckpt",
         default=None,
-        metavar='FILE',
-        help='Filename of the model checkpoint (Default: None)'
+        metavar="FILE",
+        help="Filename of the model checkpoint (Default: None)",
     )
     parser.add_argument(
         "--data-path",
