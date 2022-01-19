@@ -76,5 +76,6 @@ def main():
     )
     trainer.fit(model, trainloader, valloader)
 
+
 if __name__ == "__main__":
     main()
