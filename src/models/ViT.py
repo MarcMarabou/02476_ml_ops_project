@@ -1,9 +1,9 @@
-import kornia.contrib as K
 import kornia.augmentation as A
+import kornia.contrib as K
 import torch
+import torch.nn.functional as F
 from pytorch_lightning import LightningModule
 from torch import Tensor, nn, optim
-import torch.nn.functional as F
 
 
 class ViT(LightningModule):
@@ -53,15 +53,11 @@ class ViT(LightningModule):
         transforms = [nn.Identity()]
         if self.hparams.random_affine:
             transforms.append(
-                A.RandomAffine(
-                    degrees=0.45, translate=0.1, scale=(0.8, 1.2), p=0.25
-                )
+                A.RandomAffine(degrees=0.45, translate=0.1, scale=(0.8, 1.2), p=0.25)
             )
         if self.hparams.random_gauss:
             transforms.append(
-                A.RandomGaussianBlur(
-                    kernel_size=(3, 3), sigma=(2, 2), p=0.25
-                )
+                A.RandomGaussianBlur(kernel_size=(3, 3), sigma=(2, 2), p=0.25)
             )
         if self.hparams.random_hflip:
             transforms.append(A.RandomHorizontalFlip(p=0.25))
