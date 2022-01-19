@@ -7,11 +7,14 @@ import gcsfs
 import matplotlib.pyplot as plt
 import torch
 from pytorch_lightning import Trainer
-
+from pytorch_lightning.callbacks import Callback
 from src.data.FlowerDataset import FlowerDataset
 from src.models.task import get_args
 from src.models.ViT import ViT
 
+class drift(Callback):
+    def teardown(self, trainer, pl_module, stage):
+        print("test")
 
 def main():
     # Training settings
@@ -27,7 +30,7 @@ def main():
     )
 
     model = ViT.load_from_checkpoint(checkpoint_path=args.load_model_ckpt)
-    trainer = Trainer()
+    trainer = Trainer(callbacks=[drift()])
     predictions = trainer.predict(model, predictloader)
     print(predictions)
 

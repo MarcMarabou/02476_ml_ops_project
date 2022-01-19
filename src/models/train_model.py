@@ -7,13 +7,14 @@ import gcsfs
 import matplotlib.pyplot as plt
 import torch
 import wandb
+
 from pytorch_lightning import Trainer
 from pytorch_lightning import loggers as pl_loggers
 from torch import nn, optim
 from torchvision import datasets
-
+from copy import deepcopy
 from src.data.FlowerDataset import FlowerDataset
-from src.models.task import get_args
+from src.models.task import get_args, fit_detector
 from src.models.ViT import ViT
 
 
@@ -74,8 +75,23 @@ def main():
         gpus=args.gpus,
         strategy="ddp" if args.gpus > 1 else None,
     )
+
     trainer.fit(model, trainloader, valloader)
 
+    detector = fit_detector(trainloader, model)
+
+    feature_extractor = deepcopy(model)
+    feature_extractor.ViT[1] = nn.Identity()
+
+    inputs, _ = next(iter(trainloader))
+
+    features = feature_extractor(inputs)
+    score = detector(features)
+    p_val = detector.compute_p_value(features)
+
+    trainer.predict(model, trainloader)
+
+    
 
 if __name__ == "__main__":
     main()

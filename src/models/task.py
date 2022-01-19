@@ -1,5 +1,14 @@
 import argparse
+import torch
+import torchdrift
+from torch import nn
 
+def fit_detector(trainloader, model):
+    detector = torchdrift.detectors.KernelMMDDriftDetector()
+    model.ViT[1] = nn.Identity()
+    torchdrift.utils.fit(trainloader, model, detector, num_batches=1)
+
+    return detector
 
 def get_args():
     """Argument parser.
