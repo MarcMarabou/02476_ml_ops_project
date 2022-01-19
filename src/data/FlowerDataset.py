@@ -57,5 +57,5 @@ class FlowerDataset(Dataset):
     def __getitem__(self, idx):
         x = self.transforms(self.images[idx])
         if self.split == "test":
-            return x, None
+            return x, -1
         return x, self.classes[idx]
