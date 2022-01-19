@@ -18,5 +18,7 @@ RUN torch-model-archiver \
 CMD ["torchserve", \
      "--start", \
      "--ts-config=/home/model-server/config.properties", \
+     "--ncs", \
+     "--model-store=/home/model-server/model-store", \
      "--models", \
      "ViT=ViT.mar"]
