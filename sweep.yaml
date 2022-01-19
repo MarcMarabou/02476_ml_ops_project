@@ -14,23 +14,21 @@ parameters:
   embed-dim:
     values: [256, 512, 768]
   dropout-attn:
-    min: 0
-    max: 1
+    min: 0.0
+    max: 0.5
   dropout-rate:
-    min: 0
-    max: 1
+    min: 0.0
+    max: 0.5
   batch-size:
     values: [64, 128, 256]
   max-epochs:
     value: 30
   gpus:
-    value: 1
+    value: 2
   num-workers:
     value: 8
   data-path:
     value: "data/processed/flowers/"
-  model-dir:
-    value: "models/"
   wandb-api-key:
     value: "FILL"
 
