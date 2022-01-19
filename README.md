@@ -60,9 +60,9 @@ The [ViT](https://kornia.readthedocs.io/en/latest/models/vit.html) model:
 
 ## Week 3
 
-- [ ] Deployed your model locally using TorchServe
+- [x] Deployed your model locally using TorchServe
 - [ ] Checked how robust your model is towards data drifting
-- [ ] Deployed your model using `gcp`
+- [x] Deployed your model using `gcp`
 - [ ] Monitored the system of your deployed model
 - [ ] Monitored the performance of your deployed model
 
