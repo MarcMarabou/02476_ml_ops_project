@@ -10,7 +10,9 @@ def main():
     args = get_args()
 
     # Find the model filename
-    model_path = glob((f"models/trained_models/{args.model_timestamp_to_script}/*.ckpt"))
+    model_path = glob(
+        (f"models/trained_models/{args.model_timestamp_to_script}/*.ckpt")
+    )
 
     # Load in the model
     model = ViT.load_from_checkpoint(model_path[0])
