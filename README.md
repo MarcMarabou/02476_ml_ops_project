@@ -54,7 +54,7 @@ The [ViT](https://kornia.readthedocs.io/en/latest/models/vit.html) model:
 - [x] Create a data storage on `gcp` for you data
 - [x] Create a trigger workflow for automatically building your docker images
 - [x] Get your model training on `gcp`
-- [ ] Play around with distributed data loading
+- [x] Play around with distributed data loading
 - [ ] (optional) Play around with distributed model training
 - [ ] Play around with quantization and compilation for you trained models
 
@@ -71,11 +71,9 @@ The [ViT](https://kornia.readthedocs.io/en/latest/models/vit.html) model:
 - [ ] Revisit your initial project description. Did the project turn out as you wanted?
 - [ ] Make sure all group members have a understanding about all parts of the project
 - [ ] Create a presentation explaining your project
-- [ ] Uploaded all your code to github
+- [x] Uploaded all your code to github
 - [ ] (extra) Implemented pre-commit hooks for your project repository
 - [ ] (extra) Used Optuna to run hyperparameter optimization on your model
-
-A short description of the project.
 
 ## References
 
