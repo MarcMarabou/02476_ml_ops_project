@@ -2,14 +2,13 @@ import argparse
 
 import pytest
 import torch
-import argparse
 import torch.nn.functional as F
-from src.models.ViT import ViT
+
 from src.models.train_model import get_args
 from src.models.ViT import ViT
 
 
-#@pytest.mark.skip(reason="Model is not working currently: 01-13-2022")
+# @pytest.mark.skip(reason="Model is not working currently: 01-13-2022")
 def test_predictions():
     args = get_args()
     model = ViT(args=args)
