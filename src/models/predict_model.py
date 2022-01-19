@@ -1,4 +1,5 @@
 import argparse
+from glob import glob
 import os
 import sys
 from datetime import datetime
@@ -6,6 +7,7 @@ from datetime import datetime
 import gcsfs
 import matplotlib.pyplot as plt
 import torch
+
 from pytorch_lightning import Trainer
 from pytorch_lightning.callbacks import Callback
 from src.data.FlowerDataset import FlowerDataset
@@ -14,19 +16,22 @@ from src.models.ViT import ViT
 
 class DriftDetection(Callback):
     def teardown(self, trainer, pl_module, stage):
-        torch.load()
 
+        drift_detector = torch.load(os.path.join('models/trained_models', self.hparams.load_timestamp, '*.pt'))
 
-        input = next(iter(trainloader))[0]
+        model_copy = deepcopy(self.ViT)
+        model_copy.ViT[1] = torch.nn.Identity()
 
+        feature_extractor = torch.nn.Sequential(
+            model_copy,
+            torch.nn.Flatten()
+        )
 
-        features = feature_extractor(input)
+        features = feature_extractor(images)
 
-    score = detector(features)
-    p_val = detector.compute_p_value(features)
-
-    trainer.predict(model, trainloader)
-        print("test")
+        score = drift_detector(features)
+        p_val = drift_detector.compute_p_value(features)
+        print(f'Drift score {score:.2f} and p-value {p_val:.2f}')
 
 def main():
     # Training settings
@@ -41,7 +46,9 @@ def main():
         num_workers=args.num_workers,
     )
 
-    model = ViT.load_from_checkpoint(checkpoint_path=args.load_model_ckpt)
+    filepath_model = glob(os.path.join('models/trained_models', args.load_timestamp, '*.ckpt'))
+
+    model = ViT.load_from_checkpoint(checkpoint_path=filepath_model[0])
     trainer = Trainer(callbacks=[DriftDetection()])
     predictions = trainer.predict(model, predictloader)
     print(predictions)
