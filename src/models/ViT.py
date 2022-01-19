@@ -89,7 +89,7 @@ class ViT(LightningModule):
 
     def predict_step(self, batch, batch_idx):
         images, _ = batch
-        preds = F.softmax(self(images))
+        preds = F.softmax(self(images), 1)
         return preds
 
     def configure_optimizers(self):
