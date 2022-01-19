@@ -11,7 +11,7 @@ from src.models.ViT import ViT
 # @pytest.mark.skip(reason="Model is not working currently: 01-13-2022")
 def test_predictions():
     args = get_args()
-    model = ViT(args=args)
+    model = ViT(**vars(args))
     model.train()
     randImage = torch.rand([1, 3, 224, 224])
     output = model(randImage)

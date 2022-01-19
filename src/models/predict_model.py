@@ -9,8 +9,9 @@ import torch
 from pytorch_lightning import Trainer
 
 from src.data.FlowerDataset import FlowerDataset
-from src.models.ViT import ViT
 from src.models.task import get_args
+from src.models.ViT import ViT
+
 
 def main():
     # Training settings
@@ -29,6 +30,7 @@ def main():
     trainer = Trainer()
     predictions = trainer.predict(model, predictloader)
     print(predictions)
+
 
 if __name__ == "__main__":
     main()
