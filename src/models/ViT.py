@@ -1,4 +1,5 @@
 import kornia.contrib as K
+import kornia.augmentation as A
 import torch
 from pytorch_lightning import LightningModule
 from torch import Tensor, nn, optim
@@ -48,12 +49,31 @@ class ViT(LightningModule):
         # We define the criterium
         self.criterium = nn.CrossEntropyLoss()
 
+        # Batch augmentations
+        transforms = [nn.Identity()]
+        if self.args.random_affine:
+            transforms.append(
+                A.RandomAffine(
+                    degrees=0.45, translate=0.1, scale=(0.8, 1.2), p=0.25
+                )
+            )
+        if self.args.random_gauss:
+            transforms.append(
+                A.RandomGaussianBlur(
+                    kernel_size=(3, 3), sigma=(2, 2), p=0.25
+                )
+            )
+        if self.args.random_hflip:
+            transforms.append(A.RandomHorizontalFlip(p=0.25))
+
+        self.augmentations = nn.Sequential(*transforms)
+
     def forward(self, x):
         return self.ViT(x)
 
     def training_step(self, batch, batch_idx):
         images, labels = batch
-        images = images
+        images = self.augmentations(images)
         output = self(images)
         loss = self.criterium(output, labels)
         preds = F.log_softmax(output, 1)
@@ -64,7 +84,6 @@ class ViT(LightningModule):
 
     def validation_step(self, batch, batch_idx):
         images, labels = batch
-        images = images
         output = self(images)
         loss = self.criterium(output, labels)
         preds = F.log_softmax(output, 1)
@@ -74,7 +93,7 @@ class ViT(LightningModule):
 
     def predict_step(self, batch, batch_idx):
         images, _ = batch
-        preds = self(images)
+        preds = F.softmax(self(images))
         return preds
 
     def configure_optimizers(self):

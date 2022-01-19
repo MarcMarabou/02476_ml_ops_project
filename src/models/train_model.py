@@ -34,7 +34,7 @@ def get_args():
         help="Image size (Default: 224)",
     )
     parser.add_argument(
-        "--patch_size",
+        "--patch-size",
         type=int,
         default=16,
         metavar="N",
@@ -156,6 +156,24 @@ def get_args():
         metavar="KEY",
         help="wandb API key for logging (Default: None)",
     )
+    parser.add_argument(
+        "--random-affine",
+        type=bool,
+        default=False,
+        help="Use random affine transformation",
+    )
+    parser.add_argument(
+        "--random-gauss",
+        type=bool,
+        default=False,
+        help="Use random gaussian blur transformation",
+    )
+    parser.add_argument(
+        "--random-hflip",
+        type=bool,
+        default=False,
+        help="Use random horizontal flip transformation",
+    )
 
     args = parser.parse_args()
     return args
@@ -216,6 +234,7 @@ def main():
         auto_select_gpus=args.auto_select_gpus,
         log_every_n_steps=2,
         gpus=args.gpus,
+        strategy="ddp" if args.gpus > 1 else None,
     )
     trainer.fit(model, trainloader, valloader)
 
