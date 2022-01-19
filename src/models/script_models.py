@@ -9,9 +9,11 @@ def main():
     args = get_args()
 
     # Find the model filename
-    model_path = glob(path.join(f"models/trained_models/{args.model_timestamp_to_script}/*.ckpt"))
+    model_path = glob((f"models/trained_models/{args.model_timestamp_to_script}/*.ckpt"))
+
     # Load in the model
-    model = ViT.load_from_checkpoint(checkpoint_path=model_path)
+    model = ViT.load_from_checkpoint(model_path[0])
+
     # Script the model
     model.to_torchscript(file_path=f"models/scripted_models/{args.model_timestamp_to_script}/deployable_model.pt")
 
