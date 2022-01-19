@@ -25,24 +25,24 @@ class ViT(LightningModule):
             embed_dim (int) - the embedding dimension inside the transformer encoder. Default: 768.
             num_classes (int) - an integer representing the number of classes to classify. Default: 10."""
 
-    def __init__(self, args):
+    def __init__(self, hparams):
         super().__init__()
 
-        self.args = args
+        self.hparams = hparams
 
         # We define the model
         self.ViT = nn.Sequential(
             K.VisionTransformer(
-                image_size=args.image_size,
-                patch_size=args.patch_size,
-                embed_dim=args.embed_dim,
-                num_heads=args.num_heads,
-                dropout_rate=args.dropout_rate,
-                dropout_attn=args.dropout_attn,
-                depth=args.depth,
+                image_size=self.hparams.image_size,
+                patch_size=self.hparams.patch_size,
+                embed_dim=self.hparams.embed_dim,
+                num_heads=self.hparams.num_heads,
+                dropout_rate=self.hparams.dropout_rate,
+                dropout_attn=self.hparams.dropout_attn,
+                depth=self.hparams.depth,
             ),
             K.ClassificationHead(
-                embed_size=args.embed_dim, num_classes=args.num_classes
+                embed_size=self.hparams.embed_dim, num_classes=self.hparams.num_classes
             ),
         )
 
@@ -51,19 +51,19 @@ class ViT(LightningModule):
 
         # Batch augmentations
         transforms = [nn.Identity()]
-        if self.args.random_affine:
+        if self.hparams.random_affine:
             transforms.append(
                 A.RandomAffine(
                     degrees=0.45, translate=0.1, scale=(0.8, 1.2), p=0.25
                 )
             )
-        if self.args.random_gauss:
+        if self.hparams.random_gauss:
             transforms.append(
                 A.RandomGaussianBlur(
                     kernel_size=(3, 3), sigma=(2, 2), p=0.25
                 )
             )
-        if self.args.random_hflip:
+        if self.hparams.random_hflip:
             transforms.append(A.RandomHorizontalFlip(p=0.25))
 
         self.augmentations = nn.Sequential(*transforms)
@@ -97,5 +97,5 @@ class ViT(LightningModule):
         return preds
 
     def configure_optimizers(self):
-        args = self.args
+        args = self.hparams
         return optim.Adam(self.parameters(), lr=args.lr)
