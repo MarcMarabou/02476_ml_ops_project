@@ -13,8 +13,9 @@ from torch import nn, optim
 from torchvision import datasets
 
 from src.data.FlowerDataset import FlowerDataset
-from src.models.ViT import ViT
 from src.models.task import get_args
+from src.models.ViT import ViT
+
 
 def main():
     # Training settings
