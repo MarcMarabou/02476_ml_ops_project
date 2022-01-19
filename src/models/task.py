@@ -3,10 +3,9 @@ import torch
 import torchdrift
 from torch import nn
 
-def fit_detector(trainloader, model):
-    detector = torchdrift.detectors.KernelMMDDriftDetector()
-    model.ViT[1] = nn.Identity()
-    torchdrift.utils.fit(trainloader, model, detector, num_batches=1)
+def fit_detector(trainloader, feature_extractor):
+    detector = torchdrift.detectors.KernelMMDDriftDetector(kernel=torchdrift.detectors.mmd.GaussianKernel())
+    torchdrift.utils.fit(trainloader, feature_extractor, detector, num_batches=1)
 
     return detector
 
@@ -126,6 +125,7 @@ def get_args():
     )
     parser.add_argument(
         "--model-dir",
+        type=str,
         default=None,
         metavar="PATH",
         help="The directory to store the model (Default: None)",
@@ -144,6 +144,7 @@ def get_args():
     )
     parser.add_argument(
         "--data-path",
+        type=str,
         default="data/processed/flowers",
         metavar="PATH",
         help='Path to data files (Default: "data/processed/flowers")',

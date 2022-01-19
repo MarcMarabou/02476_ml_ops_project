@@ -22,11 +22,13 @@ def main():
     # Training settings
     args = get_args()
 
+    current_time = datetime.now().strftime("%Y%m%d%H%M%S")
+
     logger = None
     if args.wandb_api_key:
         logger = pl_loggers.WandbLogger(
             name="trained_models",
-            version=datetime.now().strftime("%Y%m%d%H%M%S"),
+            version=current_time,
             project="ml_ops_project",
             entity="ml_ops_team10",
             config=args,
@@ -37,7 +39,7 @@ def main():
         logger = pl_loggers.TensorBoardLogger(
             args.model_dir if args.model_dir else "tb_logs",
             name="trained_models",
-            version=datetime.now().strftime("%Y%m%d%H%M%S"),
+            version=current_time,
         )
         print("No wandb API key provided. Using local TensorBoard.")
 
@@ -78,20 +80,18 @@ def main():
 
     trainer.fit(model, trainloader, valloader)
 
-    detector = fit_detector(trainloader, model)
+    model_copy = deepcopy(model)
+    model_copy.ViT[1] = nn.Identity()
 
-    feature_extractor = deepcopy(model)
-    feature_extractor.ViT[1] = nn.Identity()
+    feature_extractor = nn.Sequential(
+        model_copy,
+        nn.Flatten()
+    )
 
-    inputs, _ = next(iter(trainloader))
+    detector = fit_detector(trainloader, feature_extractor)
 
-    features = feature_extractor(inputs)
-    score = detector(features)
-    p_val = detector.compute_p_value(features)
-
-    trainer.predict(model, trainloader)
-
-    
+    if args.model_dir:
+        torch.save(detector, os.path.join(args.model_dir, 'trained_models', current_time, 'drift_detector.pt'))
 
 if __name__ == "__main__":
     main()
