@@ -12,8 +12,20 @@ from src.data.FlowerDataset import FlowerDataset
 from src.models.task import get_args
 from src.models.ViT import ViT
 
-class drift(Callback):
+class DriftDetection(Callback):
     def teardown(self, trainer, pl_module, stage):
+        torch.load()
+
+
+        input = next(iter(trainloader))[0]
+
+
+        features = feature_extractor(input)
+
+    score = detector(features)
+    p_val = detector.compute_p_value(features)
+
+    trainer.predict(model, trainloader)
         print("test")
 
 def main():
@@ -30,7 +42,7 @@ def main():
     )
 
     model = ViT.load_from_checkpoint(checkpoint_path=args.load_model_ckpt)
-    trainer = Trainer(callbacks=[drift()])
+    trainer = Trainer(callbacks=[DriftDetection()])
     predictions = trainer.predict(model, predictloader)
     print(predictions)
 
