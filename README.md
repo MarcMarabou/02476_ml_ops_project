@@ -38,7 +38,7 @@ The [ViT](https://kornia.readthedocs.io/en/latest/models/vit.html) model:
 - [x] Setup version control for your data or part of your data
 - [x] Construct one or multiple docker files for your code
 - [x] Build the docker files locally and make sure they work as intended
-- [ ] Write one or multiple configurations files for your experiments
+- [x] Write one or multiple configurations files for your experiments
 - [ ] Used Hydra to load the configurations and manage your hyperparameters
 - [ ] When you have something that works somewhat, remember at some point to to some profiling and see if you can optimize your code
 - [x] Use wandb to log training progress and other important metrics/artifacts in your code
@@ -54,9 +54,9 @@ The [ViT](https://kornia.readthedocs.io/en/latest/models/vit.html) model:
 - [x] Create a data storage on `gcp` for you data
 - [x] Create a trigger workflow for automatically building your docker images
 - [x] Get your model training on `gcp`
-- [ ] Play around with distributed data loading
+- [x] Play around with distributed data loading
 - [ ] (optional) Play around with distributed model training
-- [ ] Play around with quantization and compilation for you trained models
+- [x] Play around with quantization and compilation for you trained models
 
 ## Week 3
 
