@@ -62,7 +62,7 @@ def main():
         num_workers=args.num_workers,
     )
 
-    model = ViT(hparams=args)
+    model = ViT(**vars(args))
     trainer = Trainer(
         logger=logger,
         min_epochs=args.min_epochs,

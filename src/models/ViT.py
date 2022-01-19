@@ -25,10 +25,10 @@ class ViT(LightningModule):
             embed_dim (int) - the embedding dimension inside the transformer encoder. Default: 768.
             num_classes (int) - an integer representing the number of classes to classify. Default: 10."""
 
-    def __init__(self, hparams):
+    def __init__(self, **hparams):
         super().__init__()
 
-        self.hparams = hparams
+        self.save_hyperparameters()
 
         # We define the model
         self.ViT = nn.Sequential(
