@@ -24,7 +24,7 @@ def main():
     logger = None
     if args.wandb_api_key:
         logger = pl_loggers.WandbLogger(
-            name="ViT",
+            name="trained_models",
             version=datetime.now().strftime("%Y%m%d%H%M%S"),
             project="ml_ops_project",
             entity="ml_ops_team10",
@@ -35,7 +35,7 @@ def main():
     else:
         logger = pl_loggers.TensorBoardLogger(
             args.model_dir if args.model_dir else "tb_logs",
-            name="ViT",
+            name="trained_models",
             version=datetime.now().strftime("%Y%m%d%H%M%S"),
         )
         print("No wandb API key provided. Using local TensorBoard.")
@@ -75,7 +75,6 @@ def main():
         strategy="ddp" if args.gpus > 1 else None,
     )
     trainer.fit(model, trainloader, valloader)
-
 
 if __name__ == "__main__":
     main()

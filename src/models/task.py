@@ -122,10 +122,16 @@ def get_args():
         help="The directory to store the model (Default: None)",
     )
     parser.add_argument(
-        '--load-model-ckpt',
+        "--load-model-ckpt",
         default=None,
-        metavar='FILE',
-        help='Filename of the model checkpoint (Default: None)'
+        metavar="FILE",
+        help="Filename of the model checkpoint (Default: None)"
+    )
+    parser.add_argument(
+        "--model-timestamp-to-script",
+        default=None,
+        metavar="PATH",
+        help="Name of the timestamp directory to load the .ckpt and make the scripted model (Default: None)"
     )
     parser.add_argument(
         "--data-path",
