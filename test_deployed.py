@@ -1,11 +1,13 @@
-from src.data.FlowerDataset import FlowerDataset
-import torch
-import json
 import base64
-from torchvision.transforms.functional import to_pil_image
-from io import BytesIO
-import requests
+import json
 import subprocess
+from io import BytesIO
+
+import requests
+import torch
+from torchvision.transforms.functional import to_pil_image
+
+from src.data.FlowerDataset import FlowerDataset
 
 if __name__ == "__main__":
     data = FlowerDataset(
@@ -22,17 +24,9 @@ if __name__ == "__main__":
             .decode("utf-8")
             .replace("\n", "")
         ),
-        "Content-Type": "application/json; charset=utf-8"
+        "Content-Type": "application/json; charset=utf-8",
     }
-    payload = {
-        "instances": [
-            {
-                "data": {
-                    "b64": None
-                }
-            }
-        ]
-    }
+    payload = {"instances": [{"data": {"b64": None}}]}
 
     mapping = json.load(open("index_to_name.json", "r"))
     for i in range(len(images)):
@@ -42,11 +36,12 @@ if __name__ == "__main__":
         buffered = BytesIO()
         to_pil_image(image).save(buffered, format="JPEG")
 
-        payload["instances"][0]["data"]["b64"] = base64.b64encode(buffered.getvalue()).decode("utf-8")
-        
+        payload["instances"][0]["data"]["b64"] = base64.b64encode(
+            buffered.getvalue()
+        ).decode("utf-8")
+
         json_payload = json.dumps(payload)
         r = requests.post(endpoint, headers=headers, data=json_payload)
 
         print("Label: ", mapping[str(label.item())])
         print("Prediction: ", r.text)
-        
