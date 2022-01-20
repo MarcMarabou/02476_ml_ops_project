@@ -1,13 +1,18 @@
 import argparse
+
 import torch
 import torchdrift
 from torch import nn
 
+
 def fit_detector(trainloader, feature_extractor):
-    detector = torchdrift.detectors.KernelMMDDriftDetector(kernel=torchdrift.detectors.mmd.GaussianKernel())
+    detector = torchdrift.detectors.KernelMMDDriftDetector(
+        kernel=torchdrift.detectors.mmd.GaussianKernel()
+    )
     torchdrift.utils.fit(trainloader, feature_extractor, detector, num_batches=1)
 
     return detector
+
 
 def get_args():
     """Argument parser.

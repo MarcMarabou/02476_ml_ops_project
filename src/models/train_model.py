@@ -1,20 +1,20 @@
 import argparse
 import os
 import sys
+from copy import deepcopy
 from datetime import datetime
 
 import gcsfs
 import matplotlib.pyplot as plt
 import torch
 import wandb
-
 from pytorch_lightning import Trainer
 from pytorch_lightning import loggers as pl_loggers
 from torch import nn, optim
 from torchvision import datasets
-from copy import deepcopy
+
 from src.data.FlowerDataset import FlowerDataset
-from src.models.task import get_args, fit_detector
+from src.models.task import fit_detector, get_args
 from src.models.ViT import ViT
 
 
@@ -83,20 +83,18 @@ def main():
     model_copy = deepcopy(model)
     model_copy.ViT[1] = nn.Identity()
 
-    feature_extractor = nn.Sequential(
-        model_copy,
-        nn.Flatten()
-    )
+    feature_extractor = nn.Sequential(model_copy, nn.Flatten())
 
     drift_detector = fit_detector(trainloader, feature_extractor)
 
     if args.model_dir:
-        foldername = os.path.join(args.model_dir, 'trained_models', current_time)
+        foldername = os.path.join(args.model_dir, "trained_models", current_time)
 
         if not os.path.exists(foldername):
             os.makedirs(foldername)
 
-        torch.save(drift_detector, os.path.join(foldername, 'drift_detector.pt'))
+        torch.save(drift_detector, os.path.join(foldername, "drift_detector.pt"))
+
 
 if __name__ == "__main__":
     main()
