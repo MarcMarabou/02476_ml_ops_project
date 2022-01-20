@@ -33,7 +33,7 @@ jobs:
         pip install pytest
         pip install coverage 
         coverage run -m pytest # -v uses args_parser which conflicts with our ars_parser
-        coverage html
+        coverage html --omit=tests/test_data.py,tests/test_model.py
     - name: Run isort and black
       run: |
         pip install isort black

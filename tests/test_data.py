@@ -20,6 +20,6 @@ def test_shape(split: str):
         w = int(w)
         assert img.shape == (3, h, w), "Shape mismatch"
         if split == "test":
-            assert lbl == None, "Label is not None"
+            assert lbl == -1, "Label is not None"
         else:
             assert lbl.nelement() == 1, "More than 1 label"
