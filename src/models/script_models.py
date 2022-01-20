@@ -1,5 +1,7 @@
 from glob import glob
-from os import path
+from os import makedirs, path
+
+import torch
 
 from src.models.task import get_args
 from src.models.ViT import ViT
@@ -10,16 +12,19 @@ def main():
     args = get_args()
 
     # Find the model filename
-    model_path = glob(
-        (f"models/trained_models/{args.model_timestamp_to_script}/*.ckpt")
-    )
+    model_path = glob((f"models/trained_models/{args.id_to_script}/*.ckpt"))
 
     # Load in the model
     model = ViT.load_from_checkpoint(model_path[0])
-
     # Script the model
+    file_dir = f"models/scripted_models/{args.id_to_script}/"
+    if not path.exists(file_dir):
+        makedirs(file_dir)
+
     model.to_torchscript(
-        file_path=f"models/scripted_models/{args.model_timestamp_to_script}/deployable_model.pt"
+        file_path=path.join(file_dir, "deployable_model.pt"),
+        method="trace",
+        example_inputs=torch.randn(1, 3, 224, 224),
     )
 
 
