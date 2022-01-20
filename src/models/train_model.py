@@ -91,7 +91,12 @@ def main():
     drift_detector = fit_detector(trainloader, feature_extractor)
 
     if args.model_dir:
-        torch.save(drift_detector, os.path.join(args.model_dir, 'trained_models', current_time, 'drift_detector.pt'))
+        foldername = os.path.join(args.model_dir, 'trained_models', current_time)
+
+        if not os.path.exists(foldername):
+            os.makedirs(foldername)
+
+        torch.save(drift_detector, os.path.join(foldername, 'drift_detector.pt'))
 
 if __name__ == "__main__":
     main()
