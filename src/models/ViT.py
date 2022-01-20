@@ -93,5 +93,4 @@ class ViT(LightningModule):
         return preds
 
     def configure_optimizers(self):
-        args = self.hparams
-        return optim.Adam(self.parameters(), lr=args.lr)
+        return optim.Adam(self.parameters(), lr=self.hparams.lr)
