@@ -61,16 +61,16 @@ The [ViT](https://kornia.readthedocs.io/en/latest/models/vit.html) model:
 ## Week 3
 
 - [x] Deployed your model locally using TorchServe
-- [ ] Checked how robust your model is towards data drifting
+- [x] Checked how robust your model is towards data drifting
 - [x] Deployed your model using `gcp`
 - [ ] Monitored the system of your deployed model
 - [ ] Monitored the performance of your deployed model
 
 ## Additional
 
-- [ ] Revisit your initial project description. Did the project turn out as you wanted?
-- [ ] Make sure all group members have a understanding about all parts of the project
-- [ ] Create a presentation explaining your project
+- [x] Revisit your initial project description. Did the project turn out as you wanted?
+- [x] Make sure all group members have a understanding about all parts of the project
+- [x] Create a presentation explaining your project
 - [x] Uploaded all your code to github
 - [ ] (extra) Implemented pre-commit hooks for your project repository
 - [ ] (extra) Used Optuna to run hyperparameter optimization on your model
